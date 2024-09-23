@@ -1,25 +1,17 @@
 package middleware
 
 import (
-	"mailer-microservice/utils"
-	"net/http"
-	"strings"
+	"github.com/gofiber/fiber/v2"
 )
 
-func AuthMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		authHeader := r.Header.Get("Authorization")
-		if authHeader == "" {
-			http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
-			return
-		}
+// AuthMiddleware verifica se o token de autenticação está presente
+func AuthMiddleware(c *fiber.Ctx) error {
+	// Exemplo de verificação de token
+	token := c.Get("Authorization")
+	if token == "" {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
 
-		token := strings.TrimPrefix(authHeader, "Bearer ")
-		if !utils.ValidateToken(token) {
-			http.Error(w, "Invalid token", http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
+	// Se o token estiver presente, continue com a próxima função
+	return c.Next()
 }
