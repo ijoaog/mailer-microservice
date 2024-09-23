@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	// "mailer-microservice/config" // Adicione o pacote de configuração
+	"mailer-microservice/config" // Adicione o pacote de configuração
 
 	"mailer-microservice/controllers"
 	"mailer-microservice/middleware"
@@ -14,7 +14,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 
-	// config.Init()
+	config.Init()
 
 	r.Handle("/send-mail", middleware.AuthMiddleware(http.HandlerFunc(controllers.SendMailHandler))).Methods("POST")
 
