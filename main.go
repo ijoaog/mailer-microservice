@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"mailer-microservice/config"
 	"mailer-microservice/controllers"
 	"mailer-microservice/middleware"
 	"os"
@@ -15,7 +14,7 @@ func main() {
 	app := fiber.New()
 
 	// Inicializa a configuração
-	config.Init()
+	// config.Init()
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Welcome to mailer!")
