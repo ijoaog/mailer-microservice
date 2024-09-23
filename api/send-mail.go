@@ -1,4 +1,4 @@
-package handler
+package main
 
 import (
 	"log"
@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Handler() {
+func handler() {
 	// Cria uma nova instância do Fiber
 	app := fiber.New()
 
@@ -30,4 +30,8 @@ func Handler() {
 	}
 
 	log.Fatal(app.Listen("0.0.0.0:" + port))
+}
+
+func main() {
+	handler()
 }
