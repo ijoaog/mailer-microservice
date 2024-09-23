@@ -7,21 +7,19 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func SendMailHandler(c *fiber.Ctx) error {
+// Handler é a função que será chamada pelo Vercel
+func Handler(c *fiber.Ctx) error {
+	// Chama o controlador para enviar o email
 	return controllers.SendMailHandler(c)
 }
 
+// Função principal para configurar e rodar o Fiber
 func main() {
 	app := fiber.New()
 
-	// Define a rota "/" para retornar "Hello, World!"
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	// Define a rota para enviar email
+	app.Post("/send-mail", Handler)
 
-	app.Post("/send-mail", SendMailHandler)
-
-	if err := app.Listen(":3000"); err != nil {
-		log.Fatal(err)
-	}
+	// O Vercel espera que você retorne um manipulador HTTP
+	log.Fatal(app.Listen(":3000"))
 }
