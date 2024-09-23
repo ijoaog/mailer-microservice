@@ -23,7 +23,7 @@ func main() {
 	log.Println("Server running")
 
 	// Inicie o servidor (remova isso ao implantar na Vercel)
-	if err := app.Listen(":0"); err != nil {
+	if err := app.Listen(":3010"); err != nil {
 		log.Fatal("Server failed:", err)
 	}
 }
