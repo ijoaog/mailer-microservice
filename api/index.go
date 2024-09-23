@@ -5,6 +5,7 @@ import (
 	"mailer-microservice/config"
 	"mailer-microservice/controllers"
 	"mailer-microservice/middleware"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,14 +17,17 @@ func main() {
 	// Inicializa a configuração
 	config.Init()
 
-	// Define a rota com o middleware de autenticação
-	app.Use(middleware.AuthMiddleware) // Use o middleware para todas as rotas
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Welcome to mailer!")
+	})
+	app.Use(middleware.AuthMiddleware)
 	app.Post("/send-mail", controllers.SendMailHandler)
 
 	log.Println("Server running")
-
-	// Inicie o servidor (remova isso ao implantar na Vercel)
-	if err := app.Listen(":3010"); err != nil {
-		log.Fatal("Server failed:", err)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3010"
 	}
+
+	log.Fatal(app.Listen("0.0.0.0:" + port))
 }
