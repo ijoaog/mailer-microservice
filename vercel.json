@@ -2,15 +2,14 @@
     "version": 2,
     "builds": [
       {
-        "src": "main.go",
+        "src": "api/send-mail.go",
         "use": "@vercel/go"
       }
     ],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "/main.go"
+        "src": "/send-mail",
+        "dest": "api/send-mail.go"
       }
     ]
-  }
-  
+  }  
