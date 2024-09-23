@@ -1,7 +1,6 @@
 package config
 
 import (
-	"log"
 	"os"
 )
 
@@ -25,6 +24,5 @@ func getEnv(key, defaultValue string) string {
 	if value, exists := os.LookupEnv(key); exists {
 		return value
 	}
-	log.Printf("Using default value for %s: %s", key, defaultValue)
 	return defaultValue
 }

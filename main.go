@@ -2,24 +2,28 @@ package main
 
 import (
 	"log"
-	"mailer-microservice/config" // Adicione o pacote de configuração
-
+	"mailer-microservice/config"
 	"mailer-microservice/controllers"
 	"mailer-microservice/middleware"
-	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
-	r := mux.NewRouter()
+	// Cria uma nova instância do Fiber
+	app := fiber.New()
 
+	// Inicializa a configuração
 	config.Init()
 
-	r.Handle("/send-mail", middleware.AuthMiddleware(http.HandlerFunc(controllers.SendMailHandler))).Methods("POST")
+	// Define a rota com o middleware de autenticação
+	app.Use(middleware.AuthMiddleware) // Use o middleware para todas as rotas
+	app.Post("/send-mail", controllers.SendMailHandler)
 
-	log.Println("Server running on port 8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	log.Println("Server running")
+
+	// Inicie o servidor (remova isso ao implantar na Vercel)
+	if err := app.Listen(":3010"); err != nil {
 		log.Fatal("Server failed:", err)
 	}
 }

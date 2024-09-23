@@ -5,24 +5,22 @@ import (
 	"fmt"
 	"mailer-microservice/models"
 	"mailer-microservice/services"
-	"net/http"
+
+	"github.com/gofiber/fiber/v2"
 )
 
-func SendMailHandler(w http.ResponseWriter, r *http.Request) {
+func SendMailHandler(c *fiber.Ctx) error {
 	var mail models.Mail
-	err := json.NewDecoder(r.Body).Decode(&mail)
+	err := json.Unmarshal(c.Body(), &mail)
 	if err != nil {
-		http.Error(w, "Invalid request payload", http.StatusBadRequest)
-		return
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
 	}
 
 	err = services.SendMail(mail)
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, "Failed to send mail", http.StatusInternalServerError)
-		return
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to send mail"})
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{"message": "Email sent successfully"})
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Email sent successfully"})
 }
