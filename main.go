@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func handler() {
+func main() {
 	// Cria uma nova instância do Fiber
 	app := fiber.New()
 
@@ -30,8 +30,4 @@ func handler() {
 	}
 
 	log.Fatal(app.Listen("0.0.0.0:" + port))
-}
-
-func main() {
-	handler()
 }
