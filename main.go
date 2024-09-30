@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	// "mailer-microservice/config"
 	"mailer-microservice/controllers"
 	"mailer-microservice/middleware"
 	"os"
