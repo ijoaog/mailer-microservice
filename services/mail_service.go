@@ -11,6 +11,7 @@ import (
 func SendMail(mail models.Mail) error {
 	cfg := config.LoadConfig()
 
+	// Configuração de autenticação
 	auth := smtp.PlainAuth("", cfg.SMTPUser, cfg.SMTPPass, cfg.SMTPHost)
 	// appSender := "relatify"
 	// Destinatário

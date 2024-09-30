@@ -1,17 +1,36 @@
 package middleware
 
 import (
+	"fmt"
+	"os"
+	"strings"
+
 	"github.com/gofiber/fiber/v2"
 )
 
-// AuthMiddleware verifica se o token de autenticação está presente
 func AuthMiddleware(c *fiber.Ctx) error {
-	// Exemplo de verificação de token
 	token := c.Get("Authorization")
+	fmt.Println("Token recebido:", token)
+
 	if token == "" {
+		fmt.Println("Token ausente")
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
 	}
 
-	// Se o token estiver presente, continue com a próxima função
+	parts := strings.Split(token, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		fmt.Println("Formato do token inválido:", token)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+
+	actualToken := parts[1]
+	fmt.Println("Token extraído:", actualToken)
+	fmt.Println("Token esperado:", os.Getenv("TOKEN"))
+
+	if actualToken == "" || actualToken != os.Getenv("TOKEN") {
+		fmt.Println("Token inválido ou ausente:", actualToken)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+
 	return c.Next()
 }
