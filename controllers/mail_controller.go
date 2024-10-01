@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"mailer-microservice/models"
 	"mailer-microservice/services"
 
@@ -18,7 +17,6 @@ func SendMailHandler(c *fiber.Ctx) error {
 
 	err = services.SendMail(mail)
 	if err != nil {
-		fmt.Println(err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to send mail"})
 	}
 
